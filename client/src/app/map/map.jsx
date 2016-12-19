@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {render, unmountComponentAtNode} from 'react-dom'
 import { connect } from 'react-redux';
-import { joinBoop, leaveBoop } from '../actions/index.js';
+import { joinBoop, leaveBoop, changeCategory } from '../actions/index.js';
 import loadGoogleMapsAPI from 'load-google-maps-api';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
@@ -101,15 +101,26 @@ class Map extends Component {
   getBoops(googleMaps) {
     console.log('getboops');
     console.log('category at getboops', this.props.category);
+
     Object.keys(this.props.markers).map((key) => {
       if (this.props.category !== '') {
+        // no filter case
+        if (this.props.category === 'All') {
+          this.populateMap(googleMaps, this.props.markers[key]);
+        }
+        // filtered case
         if (this.props.markers[key].category === this.props.category) {
           this.populateMap(googleMaps, this.props.markers[key]);
         }
+      // initial case
       } else {
         this.populateMap(googleMaps, this.props.markers[key]);
       }
     });
+    // reset category to render initial state correctly
+    if (this.props.category !== '') {
+      this.props.dispatch(changeCategory(''));
+    }
   }
 
   // helper function to populate map with markers of made events
