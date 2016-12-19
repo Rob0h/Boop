@@ -87,7 +87,7 @@ class InfoWindow extends React.Component {
     <Card style={cardStyle}>
         <CardHeader
           title = {this.props.boop.name}
-          avatar = "http://www.19130fitness.com/wp-content/uploads/2015/07/crossfit-barbell.png"/>
+          avatar = {this.props.boop.img}/>
           subtitle = {'Owner: Test'}
         <CardText>
           {this.props.boop.frequency} <br/>

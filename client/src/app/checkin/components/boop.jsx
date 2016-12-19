@@ -48,7 +48,7 @@ class Boop extends React.Component {
       <Card style={cardStyle}>
         <CardHeader
           title = {this.props.boop.name}
-          avatar = "https://s3-us-west-1.amazonaws.com/boops/entertainment.jpg"
+          avatar = {this.props.boop.img}
           subtitle = {this.props.boop.frequency}
         />
         <CardActions>

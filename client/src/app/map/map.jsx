@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {render, unmountComponentAtNode} from 'react-dom'
 import { connect } from 'react-redux';
-import { joinBoop, leaveBoop } from '../actions/index.js';
+import { joinBoop, leaveBoop, changeCategory } from '../actions/index.js';
 import loadGoogleMapsAPI from 'load-google-maps-api';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
@@ -103,12 +103,16 @@ class Map extends Component {
     console.log('category at getboops', this.props.category);
     Object.keys(this.props.markers).map((key) => {
       if (this.props.category !== '') {
+        if(this.props.category === 'All') {
+          this.populateMap(googleMaps, this.props.markers[key]);
+        }
         if (this.props.markers[key].category === this.props.category) {
           this.populateMap(googleMaps, this.props.markers[key]);
         }
       } else {
         this.populateMap(googleMaps, this.props.markers[key]);
       }
+      this.props.dispatch(changeCategory(''));
     });
   }
 
