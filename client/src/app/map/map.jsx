@@ -115,6 +115,7 @@ class Map extends Component {
       } else {
         this.populateMap(googleMaps, this.props.markers[key]);
       }
+      this.props.dispatch(changeCategory(''));
     });
     // reset category to render initial state correctly
     if (this.props.category !== '') {
