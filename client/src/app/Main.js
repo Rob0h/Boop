@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
+import { changeCategory } from './actions/index.js';
 import Dialog from 'material-ui/Dialog';
 import {deepOrange500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
@@ -51,7 +52,8 @@ class Main extends Component {
         open: false,
         autoHideDuration: 2000,
         message: '',
-      }
+      },
+      category: '',
     };
   }
 
@@ -77,16 +79,18 @@ class Main extends Component {
   render() {
     // sets all variables for the user login fields
     // or signup fields based on current state
+    var context = this;
     const logOutButton = this.state.isLoggedIn ?
       (  <IconMenu
           iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-          <MenuItem primaryText="Drinks" />
-          <MenuItem primaryText="Food" />
-          <MenuItem primaryText="Gym" />
-          <MenuItem primaryText="Outdoors" />
-          <MenuItem primaryText="Sports" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('All'))} primaryText="All" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('Drinks'))} primaryText="Drinks" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('Food'))} primaryText="Food" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('Gym'))} primaryText="Gym" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('Outdoors'))} primaryText="Outdoors" />
+          <MenuItem onTouchTap={() => context.props.dispatch(changeCategory('Sports'))} primaryText="Sports" />
           <MenuItem onTouchTap={this.handleLogout.bind(this)} primaryText="Sign out" />
         </IconMenu>
       ) :
@@ -127,5 +131,7 @@ class Main extends Component {
     );
   }
 }
+
+Main = connect()(Main);
 
 export default Main;

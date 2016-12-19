@@ -28,3 +28,10 @@ export const logUser = (user) => {
   }
 }
 
+export const changeCategory = (category) => {
+  return {
+    type: 'CHANGE_CATEGORY',
+    category
+  }
+}
+
