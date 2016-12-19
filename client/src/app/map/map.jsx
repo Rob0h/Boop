@@ -38,6 +38,7 @@ class Map extends Component {
     this.mapInstance = {};
     this.googleMaps = {};
     this.centerMarker = {};
+    this.markers = [];
     this.state = {
       boopId: 0,
     }
@@ -93,9 +94,22 @@ class Map extends Component {
       });*/
       
       // Retrieving from store to render events on the map
-      Object.keys(context.props.markers).map((key) => {
-        context.populateMap(googleMaps, context.props.markers[key]);
-      });
+      context.getBoops(googleMaps);
+  }
+
+  // helper function to get boop markers from redux storage
+  getBoops(googleMaps) {
+    console.log('getboops');
+    console.log('category at getboops', this.props.category);
+    Object.keys(this.props.markers).map((key) => {
+      if (this.props.category !== '') {
+        if (this.props.markers[key].category === this.props.category) {
+          this.populateMap(googleMaps, this.props.markers[key]);
+        }
+      } else {
+        this.populateMap(googleMaps, this.props.markers[key]);
+      }
+    });
   }
 
   // helper function to populate map with markers of made events
@@ -122,6 +136,7 @@ class Map extends Component {
       infoWindow.setContent( div );
       infoWindow.open(context.mapInstance, newMarker);
     });
+    this.markers.push(newMarker);
   }
 
   // dispatches an action to the storage for appending the userId to the boop that was joined in the infoWindow component
@@ -147,11 +162,20 @@ class Map extends Component {
   }
 
   render() {
+    console.log(this.props);
     console.log('maps is rendering');
     if (this.state.boopId !== 0) {
       Utils.updateJoinedUsers(this.state.boopId, this.props.markers[this.state.boopId], function() {
         console.log('database updated');
       });
+    }
+    console.log('category at render', this.props.category);
+    if (this.props.category !== '') {
+      for (var i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
+      }
+      this.markers = [];
+      this.getBoops(this.googleMaps);
     }
     return (
       <div>
@@ -176,7 +200,8 @@ export { Coords }; //there is single-entry point to schedule and it is through m
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  markers : state.markers
+  markers : state.markers,
+  category: state.category.type
 });
 
 Map = connect(mapStateToProps)(Map);
