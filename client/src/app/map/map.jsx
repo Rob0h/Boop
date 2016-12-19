@@ -100,7 +100,6 @@ class Map extends Component {
   // helper function to get boop markers from redux storage
   getBoops(googleMaps) {
     console.log('getboops');
-    console.log('category at getboops', this.props.category);
 
     Object.keys(this.props.markers).map((key) => {
       if (this.props.category !== '') {
@@ -154,7 +153,6 @@ class Map extends Component {
   join(boopId, userId) {
     // update redux storage with joinedUser
     this.props.dispatch(joinBoop(boopId, userId));
-    console.log('markers', this.props.markers);
     this.setState({boopId: boopId});
   }
 
@@ -173,8 +171,8 @@ class Map extends Component {
   }
 
   render() {
-    console.log(this.props);
     console.log('maps is rendering');
+    console.log(this.props.markers);
     if (this.state.boopId !== 0) {
       Utils.updateJoinedUsers(this.state.boopId, this.props.markers[this.state.boopId], function() {
         console.log('database updated');
