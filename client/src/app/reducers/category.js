@@ -1,5 +1,4 @@
 const category = (state = {type: ''}, action) => {
-  console.log(action.category);
   switch (action.type) {
     case 'CHANGE_CATEGORY':
       return {

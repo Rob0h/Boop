@@ -100,20 +100,27 @@ class Map extends Component {
   // helper function to get boop markers from redux storage
   getBoops(googleMaps) {
     console.log('getboops');
-    console.log('category at getboops', this.props.category);
+
     Object.keys(this.props.markers).map((key) => {
       if (this.props.category !== '') {
-        if(this.props.category === 'All') {
+        // no filter case
+        if (this.props.category === 'All') {
           this.populateMap(googleMaps, this.props.markers[key]);
         }
+        // filtered case
         if (this.props.markers[key].category === this.props.category) {
           this.populateMap(googleMaps, this.props.markers[key]);
         }
+      // initial case
       } else {
         this.populateMap(googleMaps, this.props.markers[key]);
       }
       this.props.dispatch(changeCategory(''));
     });
+    // reset category to render initial state correctly
+    if (this.props.category !== '') {
+      this.props.dispatch(changeCategory(''));
+    }
   }
 
   // helper function to populate map with markers of made events
@@ -147,7 +154,6 @@ class Map extends Component {
   join(boopId, userId) {
     // update redux storage with joinedUser
     this.props.dispatch(joinBoop(boopId, userId));
-    console.log('markers', this.props.markers);
     this.setState({boopId: boopId});
   }
 
@@ -166,8 +172,8 @@ class Map extends Component {
   }
 
   render() {
-    console.log(this.props);
     console.log('maps is rendering');
+    console.log(this.props.markers);
     if (this.state.boopId !== 0) {
       Utils.updateJoinedUsers(this.state.boopId, this.props.markers[this.state.boopId], function() {
         console.log('database updated');
